@@ -9,8 +9,11 @@ namespace PSO_Lab_3
         /** Minimum spacing permitted between antennae. */
         public static double MIN_SPACING = 0.25;
 
-        private int n_antennae;
-        private double steering_angle;
+        public int n_antennae { get; set; }
+
+        public double steering_angle { get; set; }
+
+        public double MaximumArrayPosition { get; set; }
 
         /**
          * Construct an antenna design problem.
@@ -21,6 +24,7 @@ namespace PSO_Lab_3
         {
             this.n_antennae = n_ant;
             this.steering_angle = steering_ang;
+            this.MaximumArrayPosition = Convert.ToDouble(n_antennae) / 2;
         }
 
         /**
