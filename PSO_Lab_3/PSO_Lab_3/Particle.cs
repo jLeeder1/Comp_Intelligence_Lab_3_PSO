@@ -6,10 +6,11 @@
         public double[] CurrentVelocity { get; set; }
         public double[] PersonalBestPosition { get; set; }
 
-        public Particle(double[] initialPosition, double[] initialVelocity)
+        public Particle(double[] initialPosition, double[] initialVelocity, double[] personalBestPosition)
         {
             CurrentPosition = initialPosition;
             CurrentVelocity = initialVelocity;
+            PersonalBestPosition = personalBestPosition;
         }
     }
 }

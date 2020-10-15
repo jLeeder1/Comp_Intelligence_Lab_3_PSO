@@ -7,6 +7,13 @@ namespace PSO_Lab_3
 {
     public class RandomValidPositionGenerator
     {
+        public AntennaArray AntennaArray { get; }
+
+        public RandomValidPositionGenerator(AntennaArray antennaArray)
+        {
+            AntennaArray = antennaArray;
+        }
+
         public double[] GenerateRandomAntennaPositions(AntennaArray antennaArray)
         {
             double[] antennaPositions = new double[antennaArray.n_antennae];
@@ -34,12 +41,12 @@ namespace PSO_Lab_3
 
         // Not actually sure this gives consistantly better results compared to the normal one
         // In terms of generating more valid position (and less invalid ones) it is better than the other one so we'll stick with it
-        public double[] BetterGenerateRandomPositions(AntennaArray antennaArray)
+        public double[] BetterGenerateRandomPositions()
         {
-            double[] antennaPositions = new double[antennaArray.n_antennae];
+            double[] antennaPositions = new double[AntennaArray.n_antennae];
 
             // Always add the contant antenna in the furtherest position to the right
-            antennaPositions[antennaPositions.Length - 1] = antennaArray.MaximumArrayPosition;
+            antennaPositions[antennaPositions.Length - 1] = AntennaArray.MaximumArrayPosition;
             bool isValidGeneration = false;
             Random random = new Random();
 
@@ -54,7 +61,7 @@ namespace PSO_Lab_3
                 }
 
                 // Exit clause
-                if (antennaArray.Is_valid(antennaPositions))
+                if (AntennaArray.Is_valid(antennaPositions))
                     isValidGeneration = true;
             }
 

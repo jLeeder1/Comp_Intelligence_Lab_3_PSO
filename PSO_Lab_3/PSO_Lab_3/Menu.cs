@@ -9,19 +9,19 @@ namespace PSO_Lab_3
         public void RunApplication()
         {
             AntennaArray antennaArray = new AntennaArray(3, 90);
-            double evaluation = antennaArray.Evaluate(new double[] { 0.5, 1.0, 1.5 });
-            Console.WriteLine(evaluation);
+           // double evaluation = antennaArray.Evaluate(new double[] { 0.5, 1.0, 1.5 });
+           // Console.WriteLine(evaluation);
 
-            RandomValidPositionGenerator antennaPlacementGenerator = new RandomValidPositionGenerator();
-            double[] myPositions = antennaPlacementGenerator.BetterGenerateRandomPositions(antennaArray);
+            RandomValidPositionGenerator antennaPlacementGenerator = new RandomValidPositionGenerator(antennaArray);
+            SwarmController swarmController = new SwarmController(antennaPlacementGenerator, antennaArray, antennaPlacementGenerator.BetterGenerateRandomPositions());
 
-            double evaluationTwo = antennaArray.Evaluate(myPositions);
-            Console.WriteLine(evaluationTwo);
+            swarmController.InitialiseSwarm(1);
 
-            double[] myPositionsTwo = antennaPlacementGenerator.GenerateRandomAntennaPositions(antennaArray);
+            while (true)
+            {
+                swarmController.UpdateSwarm();
+            }
 
-            double evaluationThree = antennaArray.Evaluate(myPositionsTwo);
-            Console.WriteLine(evaluationThree);
         }
 
         /* Tests with numbers and their yields:
@@ -29,5 +29,17 @@ namespace PSO_Lab_3
          * { 0.6, 1.2, 1.5 } = 11.089
          * { 0.9, 1.25, 1.5 } = 17.92
          */
+
+        /*
+     * double[] myPositions = antennaPlacementGenerator.BetterGenerateRandomPositions(antennaArray);
+
+        double evaluationTwo = antennaArray.Evaluate(myPositions);
+        Console.WriteLine(evaluationTwo);
+
+        double[] myPositionsTwo = antennaPlacementGenerator.GenerateRandomAntennaPositions(antennaArray);
+
+        double evaluationThree = antennaArray.Evaluate(myPositionsTwo);
+        Console.WriteLine(evaluationThree);
+    */
     }
 }
