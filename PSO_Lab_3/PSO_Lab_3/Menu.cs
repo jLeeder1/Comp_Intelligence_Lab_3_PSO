@@ -10,12 +10,18 @@ namespace PSO_Lab_3
         {
             AntennaArray antennaArray = new AntennaArray(3, 90);
             double evaluation = antennaArray.Evaluate(new double[] { 0.5, 1.0, 1.5 });
-            double evaluationTwo = antennaArray.Evaluate(new double[] { 0.9, 1.25, 1.5 });
             Console.WriteLine(evaluation);
+
+            RandomValidPositionGenerator antennaPlacementGenerator = new RandomValidPositionGenerator();
+            double[] myPositions = antennaPlacementGenerator.BetterGenerateRandomPositions(antennaArray);
+
+            double evaluationTwo = antennaArray.Evaluate(myPositions);
             Console.WriteLine(evaluationTwo);
 
-            AntennaPlacementGenerator antennaPlacementGenerator = new AntennaPlacementGenerator();
-            antennaPlacementGenerator.GenerateRandomAntennaPositions(antennaArray);
+            double[] myPositionsTwo = antennaPlacementGenerator.GenerateRandomAntennaPositions(antennaArray);
+
+            double evaluationThree = antennaArray.Evaluate(myPositionsTwo);
+            Console.WriteLine(evaluationThree);
         }
 
         /* Tests with numbers and their yields:
