@@ -5,10 +5,14 @@ namespace PSO_Lab_3
 {
     public class SwarmController
     {
-        private RandomValidPositionGenerator randomValidPositionGenerator;
-        private AntennaArray antennaArray;
+        private const double inertiaConstant = 0.5;
+        private const double cognitiveAttractionCoefficient = 0.5;
+        private const double socialAttractionCoefficient = 0.5;
 
-        private List<Particle> swarm;
+        private readonly RandomValidPositionGenerator randomValidPositionGenerator;
+        private readonly AntennaArray antennaArray;
+        private readonly List<Particle> swarm;
+
         private double[] globalBestPosition;
         private double globalBestEvaluationValue;
 
@@ -30,9 +34,11 @@ namespace PSO_Lab_3
                     particle.PersonalBestPosition = particle.CurrentPosition;
                 }
 
-                particle.CurrentPosition = particle.CurrentVelocity;
-                double[] newVelocity = randomValidPositionGenerator.BetterGenerateRandomPositions();
-                particle.CurrentVelocity = newVelocity;
+                double[] tempPosition = particle.CurrentVelocity;
+                
+                particle.UpdateVelocity(0.721, 1.1193, 1.1193, globalBestPosition, randomValidPositionGenerator.BetterGenerateRandomPositions(), randomValidPositionGenerator.BetterGenerateRandomPositions());
+
+                particle.CurrentPosition = tempPosition;
 
                 UpdateGlobalBestFromPersonalBest(particle.PersonalBestPosition);
 
