@@ -13,7 +13,7 @@
             PersonalBestPosition = personalBestPosition;
         }
 
-        public void UpdateVelocity(double inertiaConstant, double cognitiveAttractionCoefficient, double socialAttractionCoefficient, double[] globalBestPosition, double[] randomVectorOne, double[] randomVectoreTwo)
+        public double[] GeneratePotentialVelocity(double inertiaConstant, double cognitiveAttractionCoefficient, double socialAttractionCoefficient, double[] globalBestPosition, double[] randomVectorOne, double[] randomVectoreTwo)
         {
             // Interia
             double[] intertia = CalculateIntertiaForVelocity(inertiaConstant);
@@ -25,7 +25,7 @@
             double[] socialAttraction = CalculateSocialAttractionForVelocity(globalBestPosition, socialAttractionCoefficient, randomVectoreTwo);
 
             // All vector parts combined to create new velocity
-            CurrentVelocity = AddAllVectorsForVelocityCalculation(intertia, cognitiveAttraction, socialAttraction);
+            return AddAllVectorsForVelocityCalculation(intertia, cognitiveAttraction, socialAttraction);
         }
 
         private double[] CalculateIntertiaForVelocity(double inertiaConstant)
@@ -55,7 +55,7 @@
         {
             double[] newVector = position;
 
-            for(int index = 0; index <= position.Length - 1; index++)
+            for(int index = 0; index <= position.Length - 2; index++)
             {
                 newVector[index] *= multiplicationValue;
             }
@@ -67,7 +67,7 @@
         {
             double[] newVector = PersonalBestPosition;
 
-            for (int index = 0; index <= vectorOne.Length - 1; index++)
+            for (int index = 0; index <= vectorOne.Length - 2; index++)
             {
                 newVector[index] = vectorOne[index] - vectorTwo[index];
             }
@@ -79,7 +79,7 @@
         {
             double[] newVector = PersonalBestPosition;
 
-            for (int index = 0; index <= vectorOne.Length - 1; index++)
+            for (int index = 0; index <= vectorOne.Length - 2; index++)
             {
                 newVector[index] = vectorOne[index] * vectorTwo[index];
             }
@@ -91,7 +91,7 @@
         {
             double[] newVector = PersonalBestPosition;
 
-            for (int index = 0; index <= vectorOne.Length - 1; index++)
+            for (int index = 0; index <= vectorOne.Length - 2; index++)
             {
                 newVector[index] = vectorOne[index] + vectorTwo[index] + vectorThree[index];
             }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PSO_Lab_3
 {
@@ -46,6 +43,7 @@ namespace PSO_Lab_3
             double[] antennaPositions = new double[AntennaArray.n_antennae];
 
             // Always add the contant antenna in the furtherest position to the right
+            // Could just do away with this but i'm fine with havin it in
             antennaPositions[antennaPositions.Length - 1] = AntennaArray.MaximumArrayPosition;
             bool isValidGeneration = false;
             Random random = new Random();

@@ -5,9 +5,9 @@ namespace PSO_Lab_3
 {
     public class SwarmController
     {
-        private const double inertiaConstant = 0.5;
-        private const double cognitiveAttractionCoefficient = 0.5;
-        private const double socialAttractionCoefficient = 0.5;
+        private const double inertiaConstant = 0.721;
+        private const double cognitiveAttractionCoefficient = 1.1193;
+        private const double socialAttractionCoefficient = 1.1193;
 
         private readonly RandomValidPositionGenerator randomValidPositionGenerator;
         private readonly AntennaArray antennaArray;
@@ -34,15 +34,23 @@ namespace PSO_Lab_3
                     particle.PersonalBestPosition = particle.CurrentPosition;
                 }
 
-                double[] tempPosition = particle.CurrentVelocity;
+                double[] potentialVelocity = particle.GeneratePotentialVelocity(
+                    inertiaConstant,
+                    cognitiveAttractionCoefficient,
+                    socialAttractionCoefficient, 
+                    globalBestPosition, 
+                    randomValidPositionGenerator.BetterGenerateRandomPositions(), 
+                    randomValidPositionGenerator.BetterGenerateRandomPositions());
+
+                if (antennaArray.Is_valid(potentialVelocity))
+                {
+                    double[] tempPosition = particle.CurrentVelocity;
+                    particle.CurrentVelocity = potentialVelocity;
+                    particle.CurrentPosition = tempPosition;
+                    
+                }
                 
-                particle.UpdateVelocity(0.721, 1.1193, 1.1193, globalBestPosition, randomValidPositionGenerator.BetterGenerateRandomPositions(), randomValidPositionGenerator.BetterGenerateRandomPositions());
-
-                particle.CurrentPosition = tempPosition;
-
                 UpdateGlobalBestFromPersonalBest(particle.PersonalBestPosition);
-
-                Console.WriteLine(globalBestEvaluationValue);
             }
         }
 
@@ -65,6 +73,7 @@ namespace PSO_Lab_3
             {
                 globalBestPosition = personalBestPosition;
                 globalBestEvaluationValue = evaluationValue;
+                Console.WriteLine(globalBestEvaluationValue);
             }
         }
 
