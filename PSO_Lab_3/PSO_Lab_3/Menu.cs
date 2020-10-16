@@ -15,7 +15,7 @@ namespace PSO_Lab_3
             RandomValidPositionGenerator antennaPlacementGenerator = new RandomValidPositionGenerator(antennaArray);
             SwarmController swarmController = new SwarmController(antennaPlacementGenerator, antennaArray, antennaPlacementGenerator.BetterGenerateRandomPositions());
 
-            swarmController.InitialiseSwarm(20);
+            swarmController.InitialiseSwarm(1);
 
             while (true)
             {

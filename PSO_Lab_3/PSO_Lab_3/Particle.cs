@@ -13,7 +13,7 @@
             PersonalBestPosition = personalBestPosition;
         }
 
-        public double[] GeneratePotentialVelocity(double inertiaConstant, double cognitiveAttractionCoefficient, double socialAttractionCoefficient, double[] globalBestPosition, double[] randomVectorOne, double[] randomVectoreTwo)
+        public double[] GenerateVelocity(double inertiaConstant, double cognitiveAttractionCoefficient, double socialAttractionCoefficient, double[] globalBestPosition, double[] randomVectorOne, double[] randomVectoreTwo)
         {
             // Interia
             double[] intertia = CalculateIntertiaForVelocity(inertiaConstant);
@@ -65,7 +65,7 @@
 
         private double[] CalculateDifferenceBetweenVectors(double[] vectorOne, double[] vectorTwo)
         {
-            double[] newVector = PersonalBestPosition;
+            double[] newVector = new double[vectorOne.Length];
 
             for (int index = 0; index <= vectorOne.Length - 2; index++)
             {
@@ -77,7 +77,7 @@
 
         private double[] MultiplyVectorByVector(double[] vectorOne, double[] vectorTwo)
         {
-            double[] newVector = PersonalBestPosition;
+            double[] newVector = new double[vectorOne.Length];
 
             for (int index = 0; index <= vectorOne.Length - 2; index++)
             {
@@ -89,7 +89,7 @@
 
         private double[] AddAllVectorsForVelocityCalculation(double[] vectorOne, double[] vectorTwo, double[] vectorThree)
         {
-            double[] newVector = PersonalBestPosition;
+            double[] newVector = new double[vectorOne.Length];
 
             for (int index = 0; index <= vectorOne.Length - 2; index++)
             {
