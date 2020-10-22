@@ -13,7 +13,7 @@ namespace PSO_Lab_3
 
         public double[] GenerateRandomAntennaPositions(AntennaArray antennaArray)
         {
-            double[] antennaPositions = new double[antennaArray.n_antennae];
+            double[] antennaPositions = new double[antennaArray.N_antennae];
 
             // Always add the contant antenna in the furtherest position to the right
             antennaPositions[antennaPositions.Length - 1] = antennaArray.MaximumArrayPosition;
@@ -40,7 +40,7 @@ namespace PSO_Lab_3
         // In terms of generating more valid position (and less invalid ones) it is better than the other one so we'll stick with it
         public double[] BetterGenerateRandomPositions()
         {
-            double[] antennaPositions = new double[AntennaArray.n_antennae];
+            double[] antennaPositions = new double[AntennaArray.N_antennae];
 
             // Always add the contant antenna in the furtherest position to the right
             // Could just do away with this but i'm fine with havin it in

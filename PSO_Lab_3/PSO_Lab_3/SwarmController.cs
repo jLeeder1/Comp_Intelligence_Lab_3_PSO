@@ -5,13 +5,10 @@ namespace PSO_Lab_3
 {
     public class SwarmController
     {
-        private const double inertiaConstant = 0.721;
-        private const double cognitiveAttractionCoefficient = 1.1193;
-        private const double socialAttractionCoefficient = 1.1193;
-
         private readonly RandomValidPositionGenerator randomValidPositionGenerator;
         private readonly AntennaArray antennaArray;
         private readonly List<Particle> swarm;
+        private readonly Random random;
 
         private double[] globalBestPosition;
         private double globalBestEvaluationValue;
@@ -23,32 +20,27 @@ namespace PSO_Lab_3
             globalBestPosition = initialGlobalBest;
             globalBestEvaluationValue = antennaArray.Evaluate(globalBestPosition);
             swarm = new List<Particle>();
+            random = new Random();
         }
 
         public void UpdateSwarm()
         {
-            Random random = new Random();
-
             foreach(Particle particle in swarm)
             {
-                double[] tempOne = new double[] { random.NextDouble(), random.NextDouble() };
-                double[] tempTwo = new double[] { random.NextDouble(), random.NextDouble() };
-
                 double[] newVelocity = particle.GenerateVelocity(
-                    inertiaConstant,
-                    cognitiveAttractionCoefficient,
-                    socialAttractionCoefficient, 
+                    AntennaArray.InertiaConstant,
+                    AntennaArray.CognitiveAttractionCoefficient,
+                    AntennaArray.SocialAttractionCoefficient,
                     globalBestPosition,
-                    tempOne,
-                    tempTwo);
+                    GenerateUniformRandomArray(antennaArray.N_antennae),
+                    GenerateUniformRandomArray(antennaArray.N_antennae));
 
-                double[] temp = CalculateNewPosition(particle.CurrentPosition, newVelocity);
+                double[] newPosition = CalculateNewPosition(particle.CurrentPosition, newVelocity);
 
-                if (antennaArray.Is_valid(temp)) // is valid checks a postion rather than a velocity, double check this later
+                if (antennaArray.Is_valid(newPosition)) // Move into personal best check
                 {
-                    double[] tempPosition = particle.CurrentVelocity;
                     particle.CurrentVelocity = newVelocity;
-                    particle.CurrentPosition = tempPosition;
+                    particle.CurrentPosition = newPosition;
                 }
 
                 if (IsPersonalBest(particle.PersonalBestPosition, particle.CurrentPosition))
@@ -75,7 +67,8 @@ namespace PSO_Lab_3
 
         private double[] CalculateNewPosition(double[] currentPosition, double[] velocity)
         {
-            // THIS IS SUPLICATED FROM PARTICLE PLS REMOVE
+            // THIS IS DUPLICATED FROM PARTICLE PLEASE REMOVE
+            // New class for Vector calculations?
             double[] newVector = new double[currentPosition.Length];
             for (int index = 0; index <= currentPosition.Length - 2; index++)
             {
@@ -87,7 +80,8 @@ namespace PSO_Lab_3
 
         private double[] GenerateInitialVelocity(double[] initialPosition, double[] initialGoalPosition)
         {
-            // THIS IS SUPLICATED FROM PARTICLE PLS REMOVE
+            // THIS IS DUPLICATED FROM PARTICLE PLEASE REMOVE
+            // New class for Vector calculations?
             double[] newVector = new double[initialPosition.Length];
             for (int index = 0; index <= initialPosition.Length - 2; index++)
             {
@@ -131,6 +125,18 @@ namespace PSO_Lab_3
             }
 
             return false;
+        }
+
+        private double[] GenerateUniformRandomArray(int numElementsInArray)
+        {
+            List<double> uniformRandomArray = new List<double>();
+
+            for (int index = 0; index <= numElementsInArray - 1; index++)
+            {
+                uniformRandomArray.Add(random.NextDouble());
+            }
+
+            return uniformRandomArray.ToArray();
         }
     }
 }

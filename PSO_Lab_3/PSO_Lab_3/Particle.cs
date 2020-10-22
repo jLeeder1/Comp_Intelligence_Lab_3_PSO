@@ -24,7 +24,7 @@
             // Social attraction
             double[] socialAttraction = CalculateSocialAttractionForVelocity(globalBestPosition, socialAttractionCoefficient, randomVectoreTwo);
 
-            // All vector parts combined to create new velocity
+            // All vector parts summed to create new velocity
             return AddAllVectorsForVelocityCalculation(intertia, cognitiveAttraction, socialAttraction);
         }
 
