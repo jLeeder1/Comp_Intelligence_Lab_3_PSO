@@ -9,10 +9,11 @@ namespace PSO_Lab_3
         /** Minimum spacing permitted between antennae. */
         public static double MIN_SPACING = 0.25;
 
-        public int n_antennae { get; set; }
-
-        public double steering_angle { get; set; }
-
+        public static double InertiaConstant { get => 0.721; }
+        public static double CognitiveAttractionCoefficient { get => 1.1193; }
+        public static double SocialAttractionCoefficient { get => 1.1193; }
+        public int N_antennae { get; set; }
+        public double Steering_angle { get; set; }
         public double MaximumArrayPosition { get; set; }
 
         /**
@@ -22,9 +23,9 @@ namespace PSO_Lab_3
          */
         public AntennaArray(int n_ant, double steering_ang)
         {
-            this.n_antennae = n_ant;
-            this.steering_angle = steering_ang;
-            this.MaximumArrayPosition = Convert.ToDouble(n_antennae) / 2;
+            this.N_antennae = n_ant;
+            this.Steering_angle = steering_ang;
+            this.MaximumArrayPosition = Convert.ToDouble(N_antennae) / 2;
         }
 
         /**
@@ -34,9 +35,9 @@ namespace PSO_Lab_3
          */
         public double[][] Bounds()
         {
-            double[][] bnds = new double[n_antennae][];
-            double[] dim_bnd = { 0.0, ((double)n_antennae) / 2.0 };
-            for (int i = 0; i < n_antennae; ++i)
+            double[][] bnds = new double[N_antennae][];
+            double[] dim_bnd = { 0.0, ((double)N_antennae) / 2.0 };
+            for (int i = 0; i < N_antennae; ++i)
                 bnds[i] = dim_bnd;
             return bnds;
         }
@@ -53,13 +54,13 @@ namespace PSO_Lab_3
          */
         public bool Is_valid(double[] design)
         {
-            if (design.Length != n_antennae) return false;
+            if (design.Length != N_antennae) return false;
             double[] des = new double[design.Length];
             Array.Copy(design, 0, des, 0, design.Length);
             Array.Sort(des);
 
             //Aperture size is exactly n_antennae/2
-            if (Math.Abs(des[des.Length - 1] - ((double)n_antennae) / 2.0) > 1e-10)
+            if (Math.Abs(des[des.Length - 1] - ((double)N_antennae) / 2.0) > 1e-10)
                 return false;
             //All antennae lie within the problem bounds
             for (int i = 0; i < des.Length - 1; ++i)
@@ -80,9 +81,9 @@ namespace PSO_Lab_3
          */
         public double Evaluate(double[] design)
         {
-            if (design.Length != n_antennae)
+            if (design.Length != N_antennae)
                 throw new Exception(
-                        "AntennaArray::evaluate called on design of the wrong size. Expected: " + n_antennae +
+                        "AntennaArray::evaluate called on design of the wrong size. Expected: " + N_antennae +
                         ". Actual: " +
                         design.Length
                 );
@@ -110,17 +111,17 @@ namespace PSO_Lab_3
             //No side-lobes case
             if (peaks.Count < 2) return Double.MinValue;
             //Filter out main lobe and then return highest lobe level
-            double distance_from_steering = Math.Abs(peaks[0].elevation - steering_angle);
+            double distance_from_steering = Math.Abs(peaks[0].elevation - Steering_angle);
             for (int i = 1; i < peaks.Count; ++i)
-                if (Math.Abs(peaks[i].elevation - steering_angle) < distance_from_steering)
+                if (Math.Abs(peaks[i].elevation - Steering_angle) < distance_from_steering)
                     return peaks[0].power;
-            return peaks[1].power;
+            return Math.Abs(peaks[1].power);
         }
 
 
         private double Array_factor(double[] design, double elevation)
         {
-            double steering = 2.0 * Math.PI * steering_angle / 360.0;
+            double steering = 2.0 * Math.PI * Steering_angle / 360.0;
             elevation = 2.0 * Math.PI * elevation / 360.0;
             double sum = 0.0;
             foreach (double x in design)

@@ -1,28 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PSO_Lab_3
 {
     public class Menu
     {
+        private readonly double timeToExecuteFor = 5000;
         public void RunApplication()
         {
             AntennaArray antennaArray = new AntennaArray(3, 90);
-           // double evaluation = antennaArray.Evaluate(new double[] { 0.5, 1.0, 1.5 });
-           // Console.WriteLine(evaluation);
-
             RandomValidPositionGenerator antennaPlacementGenerator = new RandomValidPositionGenerator(antennaArray);
-            SwarmController swarmController = new SwarmController(antennaPlacementGenerator, antennaArray, antennaPlacementGenerator.BetterGenerateRandomPositions());
+            SwarmController swarmController = new SwarmController(antennaPlacementGenerator, antennaArray, antennaPlacementGenerator.GenerateRandomAntennaPositions(antennaArray));
 
-            swarmController.InitialiseSwarm(1);
+            swarmController.InitialiseSwarm(1000, antennaArray);
 
-            while (true)
+            var now = DateTime.Now;
+            while (DateTime.Now < now.AddMilliseconds(timeToExecuteFor))
             {
                 swarmController.UpdateSwarm();
             }
 
         }
+
+        // double evaluation = antennaArray.Evaluate(new double[] { 0.5, 1.0, 1.5 });
+        // Console.WriteLine(evaluation);
 
         /* Tests with numbers and their yields:
          * { 0.25, 0.9, 1.5 } = -6.54
