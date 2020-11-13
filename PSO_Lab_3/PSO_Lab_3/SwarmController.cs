@@ -27,21 +27,11 @@ namespace PSO_Lab_3
         {
             foreach(Particle particle in swarm)
             {
-                double[] newVelocity = particle.GenerateVelocity(
-                    AntennaArray.InertiaConstant,
-                    AntennaArray.CognitiveAttractionCoefficient,
-                    AntennaArray.SocialAttractionCoefficient,
-                    globalBestPosition,
-                    GenerateUniformRandomArray(antennaArray.N_antennae),
-                    GenerateUniformRandomArray(antennaArray.N_antennae));
-
+                double[] newVelocity = particle.GenerateVelocity(globalBestPosition, GenerateUniformRandomArray(antennaArray.N_antennae), GenerateUniformRandomArray(antennaArray.N_antennae));
                 double[] newPosition = CalculateNewPosition(particle.CurrentPosition, newVelocity);
 
-                if (antennaArray.Is_valid(newPosition)) // Move into personal best check
-                {
-                    particle.CurrentVelocity = newVelocity;
-                    particle.CurrentPosition = newPosition;
-                }
+                particle.CurrentVelocity = newVelocity;
+                particle.CurrentPosition = newPosition;
 
                 if (IsPersonalBest(particle.PersonalBestPosition, particle.CurrentPosition))
                 {
@@ -52,12 +42,12 @@ namespace PSO_Lab_3
             }
         }
 
-        public void InitialiseSwarm(int numberOfParticlesInSwarm)
+        public void InitialiseSwarm(int numberOfParticlesInSwarm, AntennaArray antennaArray)
         {
             for(int index = 0; index <= numberOfParticlesInSwarm - 1; index++)
             {
-                double[] initialPosition = randomValidPositionGenerator.BetterGenerateRandomPositions();
-                double[] initialGoalPosition = randomValidPositionGenerator.BetterGenerateRandomPositions();
+                double[] initialPosition = randomValidPositionGenerator.GenerateRandomAntennaPositions(antennaArray);
+                double[] initialGoalPosition = randomValidPositionGenerator.GenerateRandomAntennaPositions(antennaArray);
                 double[] initialVelocity = GenerateInitialVelocity(initialPosition, initialGoalPosition);
 
                 swarm.Add(new Particle(initialPosition, initialVelocity, initialPosition));
@@ -116,15 +106,15 @@ namespace PSO_Lab_3
 
         private bool IsPersonalBest(double[] personalBestPosition, double[] currentPosition)
         {
-            double evaluationValueForCurrent = antennaArray.Evaluate(currentPosition);
-            double evaluationValueForBest = antennaArray.Evaluate(personalBestPosition);
+            double evaluationValueForCurrent = Math.Abs(antennaArray.Evaluate(currentPosition));
+            double evaluationValueForBest = Math.Abs(antennaArray.Evaluate(personalBestPosition));
 
-            if (evaluationValueForCurrent < evaluationValueForBest)
+            if (evaluationValueForCurrent > evaluationValueForBest || !antennaArray.Is_valid(currentPosition))
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         private double[] GenerateUniformRandomArray(int numElementsInArray)

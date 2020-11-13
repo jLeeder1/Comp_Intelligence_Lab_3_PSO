@@ -115,7 +115,7 @@ namespace PSO_Lab_3
             for (int i = 1; i < peaks.Count; ++i)
                 if (Math.Abs(peaks[i].elevation - Steering_angle) < distance_from_steering)
                     return peaks[0].power;
-            return peaks[1].power;
+            return Math.Abs(peaks[1].power);
         }
 
 

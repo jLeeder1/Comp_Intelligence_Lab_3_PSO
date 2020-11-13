@@ -1,15 +1,20 @@
-﻿namespace PSO_Lab_3
+﻿using System;
+
+namespace PSO_Lab_3
 {
     public class Menu
     {
+        private readonly double timeToExecuteFor = 5000;
         public void RunApplication()
         {
             AntennaArray antennaArray = new AntennaArray(3, 90);
             RandomValidPositionGenerator antennaPlacementGenerator = new RandomValidPositionGenerator(antennaArray);
-            SwarmController swarmController = new SwarmController(antennaPlacementGenerator, antennaArray, antennaPlacementGenerator.BetterGenerateRandomPositions());
+            SwarmController swarmController = new SwarmController(antennaPlacementGenerator, antennaArray, antennaPlacementGenerator.GenerateRandomAntennaPositions(antennaArray));
 
-            swarmController.InitialiseSwarm(20);
-            while (true)
+            swarmController.InitialiseSwarm(1000, antennaArray);
+
+            var now = DateTime.Now;
+            while (DateTime.Now < now.AddMilliseconds(timeToExecuteFor))
             {
                 swarmController.UpdateSwarm();
             }

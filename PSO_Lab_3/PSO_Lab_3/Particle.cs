@@ -13,16 +13,16 @@
             PersonalBestPosition = personalBestPosition;
         }
 
-        public double[] GenerateVelocity(double inertiaConstant, double cognitiveAttractionCoefficient, double socialAttractionCoefficient, double[] globalBestPosition, double[] randomVectorOne, double[] randomVectoreTwo)
+        public double[] GenerateVelocity(double[] globalBestPosition, double[] randomVectorOne, double[] randomVectoreTwo)
         {
             // Interia
-            double[] intertia = CalculateIntertiaForVelocity(inertiaConstant);
+            double[] intertia = CalculateIntertiaForVelocity(AntennaArray.InertiaConstant);
 
             // Coginitive attraction
-            double[] cognitiveAttraction = CalculateCognitiveAttractionForVelocity(cognitiveAttractionCoefficient, randomVectorOne);
+            double[] cognitiveAttraction = CalculateCognitiveAttractionForVelocity(AntennaArray.CognitiveAttractionCoefficient, randomVectorOne);
 
             // Social attraction
-            double[] socialAttraction = CalculateSocialAttractionForVelocity(globalBestPosition, socialAttractionCoefficient, randomVectoreTwo);
+            double[] socialAttraction = CalculateSocialAttractionForVelocity(globalBestPosition, AntennaArray.SocialAttractionCoefficient, randomVectoreTwo);
 
             // All vector parts summed to create new velocity
             return AddAllVectorsForVelocityCalculation(intertia, cognitiveAttraction, socialAttraction);
@@ -51,11 +51,11 @@
             return newVector;
         }
 
-        private double[] MultiplyVectorByValue(double multiplicationValue, double[] position)
+        private double[] MultiplyVectorByValue(double multiplicationValue, double[] vertor)
         {
-            double[] newVector = position;
+            double[] newVector = vertor;
 
-            for(int index = 0; index <= position.Length - 2; index++)
+            for(int index = 0; index <= vertor.Length - 2; index++)
             {
                 newVector[index] *= multiplicationValue;
             }
